@@ -1,0 +1,19 @@
+Windows Registry Editor Version 5.00
+
+; Добавляет пункт "Открыть PowerShell здесь" при клике ПКМ в Проводнике
+; Работает в Windows 10
+
+[HKEY_CLASSES_ROOT\Directory\Background\shell\PowerShellHere]
+@="Открыть PowerShell здесь"
+"Icon"="powershell.exe"
+
+[HKEY_CLASSES_ROOT\Directory\Background\shell\PowerShellHere\command]
+@="powershell.exe -NoExit -Command Set-Location '%V'"
+
+[HKEY_CLASSES_ROOT\Directory\shell\PowerShellHere]
+@="Открыть PowerShell здесь"
+"Icon"="powershell.exe"
+
+[HKEY_CLASSES_ROOT\Directory\shell\PowerShellHere\command]
+@="powershell.exe -NoExit -Command Set-Location '%V'"
+

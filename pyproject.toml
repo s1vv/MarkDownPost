@@ -1,0 +1,35 @@
+[project]
+name = "mdp"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "beautifulsoup4>=4.14.2",
+    "markdown>=3.9",
+    "openpyxl>=3.1.5",
+    "pandas>=2.3.3",
+    "python-dotenv>=1.1.1",
+    "python-telegram-bot>=22.5",
+    "requests>=2.32.5",
+    "telegraph>=2.2.0",
+    "typer[all]>=0.19.2",
+]
+
+[project.scripts]
+mdp = "main:main"
+
+[tool.setuptools]
+package-dir = {"" = "src"}
+
+[build-system]
+requires = ["setuptools>=66"]
+build-backend = "setuptools.build_meta"
+
+[dependency-groups]
+dev = [
+    "ruff>=0.13.3",
+]
+
+[tool.ruff]
+lint.extend-select = ["I"]  # включает правила isort
