@@ -112,7 +112,11 @@ python3 -m pipx ensurepath
 ---
 
 #### 3. Установка приложения
-- pipx install git+https://github.com/s1vv/MarkDownPost.git
+- выполнить команду в терминале:
+
+```bash
+pipx install git+https://github.com/s1vv/MarkDownPost.git
+```
 > или
 - [Перейдите](https://github.com/s1vv/MarkDownPost) в GitHub-репозиторий проекта.
 - Нажмите **Code → Download ZIP**.
