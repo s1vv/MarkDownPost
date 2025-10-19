@@ -82,10 +82,11 @@
 
 # Установка в Windows
 
-### 1. Установка через pipx
+### 1. Установка python и терминала
 
-- [Скачать Python версии не ниже 3.12](https://www.python.org/ftp/python/3.12.3/python-3.12.3-amd64.exe "версия 3.12.3 64 bit") и установить
-- Перейдите на GitHub-репозиторий проекта.
+- [Скачать](https://www.python.org/ftp/python/3.12.3/python-3.12.3-amd64.exe "версия 3.12.3 64 bit") Python версии не ниже 3.12 и установить
+- [Скачать ](https://git-scm.com/downloads/win) терминал Git Bash и установить
+- [Перейдите](https://github.com/s1vv/MarkDownPost) в GitHub-репозиторий проекта.
 - Нажмите **Code → Download ZIP**.
 - Распакуйте архив в удобное место
 
@@ -95,9 +96,9 @@
 
 #### Проверка и установка pipx
 
-- **Windows (PowerShell)**:
+- **Открыть папку в Git Bash**:
 
-```powershell
+```bash
 python -m pip install --user pipx
 python -m pipx ensurepath
 ```
@@ -113,23 +114,11 @@ python3 -m pipx ensurepath
 
 ---
 
-#### Установка проекта
+#### 3. Установка приложения
 
-Перейдите в папку проекта:
+- Перейдите в папку с приложением и откройте ее в Git Bash
 
-- Windows (PowerShell):
-
-```powershell
-cd C:\Users\<User>\Downloads\mdp
-```
-
-- Linux/macOS:
-
-```bash
-cd ~/Downloads/mdp
-```
-
-Установите проект через pipx:
+- Установите проект через pipx:
 
 ```bash
 pipx install .
@@ -145,7 +134,13 @@ pipx install .
 mdp --help
 ```
 
-Вы должны увидеть все команды CLI вашего проекта.
+или
+
+```bash
+mdp help-all
+```
+
+Вы должны увидеть все команды приложения.
 
 ---
 
