@@ -86,9 +86,6 @@
 
 - [Скачать](https://www.python.org/ftp/python/3.12.3/python-3.12.3-amd64.exe "версия 3.12.3 64 bit") Python версии не ниже 3.12 и установить
 - [Скачать ](https://git-scm.com/downloads/win) терминал Git Bash и установить
-- [Перейдите](https://github.com/s1vv/MarkDownPost) в GitHub-репозиторий проекта.
-- Нажмите **Code → Download ZIP**.
-- Распакуйте архив в удобное место
 
 ---
 
@@ -115,7 +112,11 @@ python3 -m pipx ensurepath
 ---
 
 #### 3. Установка приложения
-
+- pipx install git+https://github.com/s1vv/MarkDownPost.git
+> или
+- [Перейдите](https://github.com/s1vv/MarkDownPost) в GitHub-репозиторий проекта.
+- Нажмите **Code → Download ZIP**.
+- Распакуйте архив в удобное место
 - Перейдите в папку с приложением и откройте ее в Git Bash
 
 - Установите проект через pipx:
