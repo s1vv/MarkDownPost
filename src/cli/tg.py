@@ -60,7 +60,7 @@ def post(md_path: str):
         result = await client.send_message(chat_id=channel, text=text)
         if isinstance(result, Message):
             msg_id = result.message_id
-            logger.debug(f"✅Опубликован пост ID: {msg_id}")
+            logger.info(f"✅Опубликован пост ID: {msg_id}")
             return msg_id
         else:
             logger.warning(f"❌Ошибка публикации: {result}")
