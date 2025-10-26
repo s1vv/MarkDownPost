@@ -16,7 +16,7 @@ class TelegraphClient:
 
     def upload_file(self, path: str) -> str:
         """
-        Загружает файл (jpg/png/gif/mp4/mp3) на Telegraph и возвращает URL. Устарел?
+        Uploads a file (jpg/png/gif/mp4/mp3) to Telegraph and returns the URL. Outdated?
         """
         with open(path, "rb") as f:
             r = requests.post(TELEGRAPH_UPLOAD_URL, files={"file": f})
@@ -34,8 +34,8 @@ class TelegraphClient:
         author_url: Optional[str] = None,
     ) -> Dict[str, Any]:
         """
-        Создаёт новую страницу в Telegraph.
-        Возвращает JSON-ответ API.
+        Creates a new page in the Telegraph.
+        Returns the API's JSON response.
         """
         html_content, title_from_html = markdown_to_telegraph_nodes(md_path)
         title = title or title_from_html or "None"
@@ -53,7 +53,7 @@ class TelegraphClient:
         author_url: Optional[str] = None,
     ) -> Dict[str, Any]:
         """
-        Редактирует существующую страницу.
+        Edits an existing page.
         """
         html_content, title_from_html = markdown_to_telegraph_nodes(md_path)
         title = title or title_from_html or "None"
@@ -64,7 +64,7 @@ class TelegraphClient:
 
     def get_page(self, path: str, return_content: bool = True) -> Dict[str, Any]:
         """
-        Получает страницу по path.
+        Retrieves the page by path.
         """
         params = {"return_content": str(return_content).lower()}
         r = requests.get(f"{TELEGRAPH_API_URL}/getPage/{path}", params=params)
@@ -73,7 +73,7 @@ class TelegraphClient:
 
     def get_pages_list(self, limit: int = 50, offset: int = 0) -> Dict[str, Any]:
         """
-        Возвращает список страниц аккаунта.
+        Retrieves the list of account pages.
         """
         params = {
             "access_token": self.access_token,
@@ -85,11 +85,9 @@ class TelegraphClient:
 
     def delete_page(self, path: str, title: str = "Deleted") -> dict:
         """
-        Симуляция удаления страницы — затираем пустым HTML.
+        Simulation of page deletion — we erase the empty HTML.
         """
-        html_content = [
-            {"tag": "p", "children": [" "]}  # минимальный блок, API примет
-        ]  # пустая страница
+        html_content = [{"tag": "p", "children": [" "]}]
         result = self.client.edit_page(
             path=path, title=title, author_name="", author_url="", content=html_content
         )

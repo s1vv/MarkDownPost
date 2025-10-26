@@ -5,13 +5,12 @@ import typer
 
 from cli.logger_config import logger
 
-app = typer.Typer(help="Главное CLI-приложение")
+app = typer.Typer(help="Main CLI")
 
 
 @app.callback()
 def main():
-    """Главная точка входа для CLI."""
-    logger.debug("Контекст приложения инициализирован")
+    logger.debug("The context is being initialized")
 
 
 # Автоматическое подключение подкоманд
@@ -25,6 +24,6 @@ for module_info in pkgutil.iter_modules(__path__):
         sub_app = getattr(module, "app")
         if isinstance(sub_app, typer.Typer):
             app.add_typer(sub_app, name=module_info.name)
-            logger.debug(f"Подключен модуль: {module_info.name}")
+            logger.debug(f"Module: {module_info.name}")
         else:
-            logger.warning(f"Модуль {module_info.name} не содержит Typer.app")
+            logger.warning(f"Module {module_info.name} have no Typer.app")

@@ -1,0 +1,148 @@
+{
+  "errors": {
+    "MISSING_TOKEN": {
+      "ru": "❌ Token отсутствует",
+      "en": "❌ Token missing",
+      "file": ["tg.py", "gr.py", "tgh.py", "1"]
+    },
+    "MISSING_CHANNEL": {
+      "ru": "❌ Telegram канал отсутствует",
+      "en": "❌ Telegram channel missing",
+      "file": ["tg.py", "gr.py"]
+    },
+    "API_ERROR": {
+      "ru": "❌ Ошибка:",
+      "en": "❌ Error:",
+      "file": ["tgh.py"]
+    },
+    "SAVE_ERROR": {
+      "ru": "❌ Ошибка сохранения:",
+      "en": "❌ Saving error:",
+      "file": ["gr.py", "1"]
+    },
+    "ENV_NOT_FOUND": {
+      "ru": "⚠️ .env не найден, выполните `mdp env init --help`.",
+      "en": "⚠️ .env not found, run `mdp env init --help`.",
+      "file": ["env.py"]
+    }
+  },
+  "success": {
+   "PAGE_URL": {
+      "ru": "Страница доступна по адресу: {result[",
+      "en": "Page available at: {result[",
+      "file": ["gr.py"]
+    },
+    "SAVE_SUCCESS": {
+      "ru": "✅ Cохранeно:",
+      "en": "✅ Saved:",
+      "file": ["gr.py", "1"]
+    },
+    "RESULT": {
+      "ru": "Результат:",
+      "en": "Result:",
+      "file": ["exstract_from_commas.py"]
+    }
+  },
+  "telegraph_env": {
+    "TOKEN_REQUEST": {
+      "ru": "TELEGRAPH_ACCESS_TOKEN не найден. Создать новый аккаунт и сохранить токен? (y/n):",
+      "en": "TELEGRAPH_ACCESS_TOKEN not found. Create a new account and save the token? (y/n):"
+    },
+    "TOKEN_NOT_CREATED": {
+      "ru": "Отказ от создания Telegraph-аккаунта. Завершение работы.",
+      "en": "Refusal to create a Telegraph account. Termination of work."
+    },
+    "TOKEN_CREATED": {
+      "ru": "Создан новый Telegraph аккаунт. Токен:",
+      "en": "A new Telegraph account has been created. Token:"
+    } 
+  },
+  "cli": {
+    "TELEGRAM_COMMANDS": {
+      "ru": "Команды для Telegram",
+      "en": "Commands for Telegram",
+      "file": ["tg.py"]
+    },
+    "TELEGRAPH_COMMANDS": {
+      "ru": "Команды для Telegraph",
+      "en": "Commands for Telegraph",
+     "file": ["gr", "1"]
+    },
+    "TELEGRAPH_TELEGRAM_COMMAND": {
+      "ru": "Пост в Telegraph и ссылку на страницу в Telegram",
+      "en": "A post in the Telegraph and a link of page to the Telegram"
+    },
+    "GR_EDIT": {
+      "ru": "Редактирование страницы: mdp gr edit page-address path/to/file.md, опционально использовать --title, тогда title не извлекается из # в .md",
+      "en": "Page Editing: mdp gr edit page-address path/to/file.md, optionally use --title, then title is not extracted from # in .md" 
+    },
+    "GR_POST": {
+      "ru": "Создание страницы: mdp gr post path/to/file.md опционально использовать --title, тогда title не извлекается из # в .md ",
+      "en": "Creating a page: mdp gr post path/to/file.md, optionally use --title, then title is not extracted from # in .md"
+    },
+    "GR_GET_PAGES_LIST": {
+      "ru": "Возвращает список страниц аккаунта. Если указан параметр --output-path, сохраняет результат в Excel-файл (с добавлением timestamp). Иначе — печатает краткую таблицу в консоль.",
+      "en": "Retrieves the list of account pages. If the --output-path parameter is specified, saves the result to an Excel file (with timestamp added). Otherwise, it prints a short table to the console."
+    },
+    "TG_EDIT": {
+      "ru": "Редактирует сообщение в Telegram-канале: mdp tg edit msg-id path/to/file.md",
+      "en": "Edits a message in the Telegram channel: mdp tg edit msg-id path/to/file.md"
+    },
+    "TG_POST": {
+      "ru": "Пост сообщения в Telegram-канале и добавление в него ID (опционально): mdp tg post path/to/file.md",
+      "en": "Posting a message in the Telegram channel and adding an ID to it (optional): mdp tg post path/to/file.md"
+    },
+    "TG_RM_MSG": {
+      "ru": "Удаление из Telegram-канала сообщения по ID: mdp tg rm msg-id",
+      "en": "Deleting a message by ID from the Telegram channel"
+    },
+    "TG_IMG_POST": {
+      "ru": "Пост изображения в Telegram-канал. Можно указать путь к локальному изображению или ссылку https: tg img-post <photo_path> --md-path <option>",
+      "en": "Post the image to the Telegram channel. You can specify the path to the local image or an https link: tg img-post <photo_path> --md-path <option>"
+    },
+    "TG_IMG_EDIT": {
+      "ru": "Редактировать текст изображения, само изображение для редактирования не доступно. Если передать только <post_id> то текст изображения удалится",
+      "en": "Edit the text of the image, the image itself is not available for editing. If only <post_id> is passed, the image text will be deleted."
+    }
+  },        
+  "alias": {
+    "EDIT": {
+      "ru": "короткий вариант (алиас) команды edit",
+      "en": "alias for edit"
+    },
+    "POST": {
+      "ru": "короткий вариант (алиас) команды post",
+      "en": "alias for post"
+    },
+    "GET_PAGES_LIST": {
+      "ru": "короткий вариант (алиас) команды get-pages-list",
+      "en": "alias for get-pages-list"
+    },
+    "IMG_POST": {
+      "ru": "короткий вариант (алиас) команды img-post",
+      "en": "alias for img-post"
+    },
+    "TG_IMG_EDIT": {
+      "ru": "короткий вариант (алиас) команды img-edit", 
+      "en": "alias for img-edit"
+    }
+  },
+  "table_titles": {
+    "PGS_LST": {
+      "ru": "Список страниц",
+      "en": "Pages list"
+    },
+    "TITLE": {
+      "ru": "Заголовок",
+      "en": "Title"
+    },
+    "PATH": {
+      "ru": "Адрес",
+      "en": "Path"
+    },
+    "VIEWS": {
+      "ru": "Просмотры",
+      "en": "Views"
+    }
+  }
+}
