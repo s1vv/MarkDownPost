@@ -5,8 +5,8 @@
 > **`mdp`** — a CLI tool for instantly publishing Markdown files to Telegram and Telegraph while preserving formatting.
 > Easily post, edit, and manage content directly from your source files.
 
-* 📺 [YouTube — Installation & Examples](https://youtu.be/sw2zhOAxWmM)
-* 💬 [Telegram community](https://t.me/rs_py)
+* 📺 [YouTube — Installation & Examples](https://www.youtube.com/@markdownpost)
+* 💬 [Telegram community](https://t.me/markdownpost)
 
 ---
 
@@ -43,7 +43,7 @@
 | ---------- | -------------------------------------------------------------- |
 | `gr`       | Commands for **TeleGraph**                                     |
 | `tg`       | Commands for **Telegram**                                      |
-| `tgh`      | Commands for **simultaneous posting** to both TG and Telegraph |
+| `tgh`      | Commands for **csimultaneous posting** to both TG and Telegraph |
 | `help-all` | Show help for all commands and subcommands                     |
 
 ---
