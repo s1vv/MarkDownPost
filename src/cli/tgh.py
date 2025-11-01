@@ -13,13 +13,13 @@ from i18n.i18n_keys import I18NKey
 
 app = typer.Typer(help=i18n.get(I18NKey.CLI_TELEGRAPH_TELEGRAM_COMMAND))
 
-if not settings.TELEGRAM_BOT_TOKEN or not settings.TELEGRAPH_ACCESS_TOKEN:
-    logger.critical(f"{i18n.get(I18NKey.ERRORS_MISSING_TOKEN)}: Telegram | Telegraph")
+if not settings.TELEGRAM_BOT_TOKEN:
+    logger.critical(f"{i18n.get(I18NKey.ERRORS_MISSING_TOKEN)}: Telegram")
 if not settings.TELEGRAM_CHANNEL:
     logger.critical(f"{i18n.get(I18NKey.ERRORS_MISSING_CHANNEL)}")
 
 TgClient = TelegramClient(settings.TELEGRAM_BOT_TOKEN or "None")
-GrClient = TelegraphClient(settings.TELEGRAPH_ACCESS_TOKEN or "None")
+GrClient = TelegraphClient(settings.TELEGRAPH_ACCESS_TOKEN)
 channel = settings.TELEGRAM_CHANNEL or "None"
 
 
