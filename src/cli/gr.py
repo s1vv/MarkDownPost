@@ -22,7 +22,49 @@ console = Console()
 if not settings.TELEGRAM_BOT_TOKEN:
     logger.warning(i18n.get(I18NKey.ERRORS_MISSING_TOKEN))
 
-client = TelegraphClient(settings.TELEGRAPH_ACCESS_TOKEN or "None")
+telegraph_token = None
+
+def _get_token_telegraph() -> str:
+    from config.settings import ENV_FILE, AUTHOR_NAME
+    from core.telegraph import Telegraph
+    from dotenv import load_dotenv, set_key
+
+    answer = input(i18n.get(I18NKey.TELEGRAPH_ENV_TOKEN_REQUEST)).strip().lower()
+
+    if answer not in ["y", "yes", "д", "да"]:
+        logger.warning(i18n.get(I18NKey.TELEGRAPH_ENV_TOKEN_NOT_CREATED))
+        raise SystemExit(1)
+
+    # Создаём новый аккаунт в Telegraph
+    telegraph = Telegraph()
+    acc = telegraph.create_account(short_name=AUTHOR_NAME)
+    new_token = acc["access_token"]
+    logger.info(i18n.get(I18NKey.TELEGRAPH_ENV_TOKEN_CREATED), new_token)
+
+    # Сохраняем токен в тот .env, который реально используется (ENV_FILE)
+    if not ENV_FILE:
+        logger.error(i18n.get(I18NKey.ERRORS_ENV_NOT_FOUND))
+        return new_token
+
+    try:
+        # set_key ожидает путь как строку или Path; убедимся что директория и файл существуют
+        ENV_FILE.parent.mkdir(parents=True, exist_ok=True)
+        if not ENV_FILE.exists():
+            ENV_FILE.touch()
+        # Записываем в файл .env
+        set_key(str(ENV_FILE), "TELEGRAPH_ACCESS_TOKEN", new_token)
+        logger.info(i18n.get(I18NKey.SUCCESS_SAVE_SUCCESS), ENV_FILE)
+        # Подгрузим обновлённые переменные (опционально)
+        load_dotenv(ENV_FILE, override=True)
+    except Exception as e:
+        logger.error(i18n.get(I18NKey.ERRORS_SAVE_ERROR), ENV_FILE, e)
+
+    return new_token
+
+if not settings.TELEGRAPH_ACCESS_TOKEN:
+    telegraph_token = _get_token_telegraph()
+    
+client = TelegraphClient(telegraph_token or "None")
 
 
 @app.command(help=i18n.get(I18NKey.CLI_GR_EDIT))
@@ -165,3 +207,4 @@ def rm(path: str):
 app.command("e", help=i18n.get(I18NKey.ALIAS_EDIT))(edit)
 app.command("p", help=i18n.get(I18NKey.ALIAS_POST))(post)
 app.command("gpl", help=i18n.get(I18NKey.ALIAS_GET_PAGES_LIST))(get_pages_list)
+

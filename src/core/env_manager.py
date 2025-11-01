@@ -8,7 +8,7 @@ from dotenv import dotenv_values, load_dotenv
 
 def get_env_path() -> Path:
     """
-    Определяет, где хранится локальный .env файл.
+    Defines where the local .env file is stored.
     Windows → %APPDATA%\mdp\.env
     Linux/macOS → ~/.config/mdp/.env
     """
@@ -23,8 +23,8 @@ def get_env_path() -> Path:
 
 def init_env_from_template(template_path: Path, apply: bool = False) -> Path:
     """
-    Создаёт .env из указанного шаблона и при необходимости
-    устанавливает переменные окружения в систему.
+    Creates an .env from the specified template and, if necessary,
+    sets environment variables in the system.
     """
     if not template_path.exists():
         print(f"❌ Файл шаблона не найден: {template_path}")
