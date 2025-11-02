@@ -9,23 +9,26 @@ from config import settings
 from core.telegram import TelegramClient
 from utils.converting_md2html import md_to_html
 from utils.html_for_telegram import sanitize_html_for_telegram
+from utils.i18n import i18n
+from i18n.i18n_keys import I18NKey
 
-app = typer.Typer(help="Команды для Telegram")
+
+app = typer.Typer(help=i18n.get(I18NKey.CLI_TELEGRAM_COMMANDS))
 
 if not settings.TELEGRAM_BOT_TOKEN:
-    logger.error("❌ Token отсутствует")
+    logger.error(i18n.get(I18NKey.ERRORS_MISSING_TOKEN))
 
 if not settings.TELEGRAM_CHANNEL:
-    logger.error("❌ Tg канал отсутствует")
+    logger.error(i18n.get(I18NKey.ERRORS_MISSING_CHANNEL))
 
 client = TelegramClient(settings.TELEGRAM_BOT_TOKEN or "None")
 channel = settings.TELEGRAM_CHANNEL or "None"
 
 
-@app.command()
+@app.command(help=i18n.get(I18NKey.CLI_TG_EDIT))
 def edit(msg_id: int, md_path: str):
     """
-    Редактирует сообщение в Telegram-канале.
+    Edits a message in the Telegram channel.
     """
 
     async def _edit(msg_id: int, md_path: str) -> None:
@@ -37,17 +40,19 @@ def edit(msg_id: int, md_path: str):
         )
         result = await client.edit_message(channel, msg_id, clean_html)
         if isinstance(result, Message):
-            logger.info(f"✅Отредактирован пост ID: {msg_id}")
+            logger.info(f"{i18n.get(I18NKey.SUCCESS_SAVE_SUCCESS)} ID {msg_id}")
         else:
-            logger.warning(f"❌Ошибка редактирования ID {msg_id}: {result}")
+            logger.warning(
+                f"{i18n.get(I18NKey.ERRORS_API_ERROR)} ID {msg_id}: {result}"
+            )
 
     asyncio.run(_edit(msg_id, md_path))
 
 
-@app.command()
+@app.command(help=i18n.get(I18NKey.CLI_TG_POST))
 def post(md_path: str):
     """
-    Пост сообщение в Telegram-канале и добавление в него ID
+    Posting a message in the Telegram channel and adding an ID to it (optional)
     """
     html = md_to_html(md_path)
     clean_html = sanitize_html_for_telegram(
@@ -60,19 +65,21 @@ def post(md_path: str):
         result = await client.send_message(chat_id=channel, text=text)
         if isinstance(result, Message):
             msg_id = result.message_id
-            logger.info(f"✅Опубликован пост ID: {msg_id}")
+            logger.info(f"{i18n.get(I18NKey.SUCCESS_SAVE_SUCCESS)} ID {msg_id}")
             return msg_id
         else:
-            logger.warning(f"❌Ошибка публикации: {result}")
+            logger.warning(f"{i18n.get(I18NKey.ERRORS_API_ERROR)} {result}")
             return None
 
     async def _edit(msg_id: int) -> None:
         new_text = clean_html + "\n" + str(msg_id)
         result = await client.edit_message(channel, msg_id, new_text)
         if isinstance(result, Message):
-            logger.info(f"✅Опубликован пост ID: {msg_id}")
+            logger.info(f"{i18n.get(I18NKey.SUCCESS_SAVE_SUCCESS)} ID {msg_id}")
         else:
-            logger.warning(f"❌Ошибка поста ID {msg_id}: {result}")
+            logger.warning(
+                f"{i18n.get(I18NKey.ERRORS_API_ERROR)} ID {msg_id}: {result}"
+            )
 
     async def main():
         try:
@@ -80,30 +87,30 @@ def post(md_path: str):
             if msg_id is not None and settings.ADD_ID:
                 await _edit(msg_id)
         except Exception as e:
-            logger.warning(f"Ошибка постинга: {e}")
+            logger.warning(f"{i18n.get(I18NKey.ERRORS_API_ERROR)} {e}")
 
     asyncio.run(main())
 
 
-@app.command()
+@app.command(help=i18n.get(I18NKey.CLI_TG_RM_MSG))
 def rm(msg_id: int):
     """
-    Удаление из Telegram-канала сообщения по ID
+    Deleting a message by ID from the Telegram channel
     """
 
     async def _rm() -> None:
         res = await client.delete_message(chat_id=channel, message_id=msg_id)
-        logger.info(f"Удаление поста ID {msg_id}: {'да' if res else 'нет'}")
+        logger.info(
+            f"{i18n.get(I18NKey.SUCCESS_RESULT)} ID {msg_id}: {'yes' if res else 'no'}"
+        )
 
     asyncio.run(_rm())
 
 
-@app.command()
+@app.command(help=i18n.get(I18NKey.CLI_TG_IMG_POST))
 def img_post(photo_path: str, md_path: Optional[str] = None):
     """
-    Пост изображения в Telegram-канал.
-    Можно указать путь к локальному изображению или ссылку https
-    \ntg img-post <photo_path> --md-path <option>
+    Post the image to the Telegram channel.
     """
 
     async def _img_post(photo_path: str, md_path: Optional[str]) -> None:
@@ -111,34 +118,35 @@ def img_post(photo_path: str, md_path: Optional[str] = None):
             chat_id=channel, photo_path=photo_path, md_path=md_path
         )
         if res:
-            logger.info(f"Пост ID: {res.message_id}")
+            logger.info(f"{i18n.get(I18NKey.SUCCESS_RESULT)}  ID: {res.message_id}")
         else:
-            logger.warning(f"Ошибка рамщешения поста {photo_path}: {res}")
+            logger.warning(f"{i18n.get(I18NKey.ERRORS_API_ERROR)}  {photo_path}: {res}")
 
     asyncio.run(_img_post(photo_path, md_path))
 
 
-@app.command()
-def img_edit(post_id: int, md_path: Optional[str] = None):
+@app.command(help=i18n.get(I18NKey.CLI_TG_IMG_EDIT))
+def img_edit(msg_id: int, md_path: Optional[str] = None):
     """
-    Редактировать текст изображения, само изображение для редактирования не доступно.
-    Если передать только <post_id> то текст изображения удалится
+    Edit the text of the image, the image itself is not available for editing.
     """
 
-    async def _img_edit(post_id: int, md_path: Optional[str] = None) -> None:
+    async def _img_edit(msg_id: int, md_path: Optional[str] = None) -> None:
         res = await client.edit_photo(
-            chat_id=channel, message_id=post_id, md_path=md_path
+            chat_id=channel, message_id=msg_id, md_path=md_path
         )
 
         if isinstance(res, Message):
-            logger.info(f"Отредактирован пост ID: {res.message_id}")
+            logger.info(
+                f"{i18n.get(I18NKey.SUCCESS_SAVE_SUCCESS)} ID: {res.message_id}"
+            )
         else:
-            logger.warning(f"Ошибка редактирования поста: {res}")
+            logger.warning(f"{i18n.get(I18NKey.ERRORS_API_ERROR)} {res}")
 
-    asyncio.run(_img_edit(post_id=post_id, md_path=md_path))
+    asyncio.run(_img_edit(msg_id, md_path))
 
 
-app.command("e", help="Алиас для edit")(edit)
-app.command("p", help="Алиас для post")(post)
-app.command("ip", help="Алиас для img_post")(img_post)
-app.command("ie", help="Алиас для img_edit")(img_edit)
+app.command("e", help=i18n.get(I18NKey.ALIAS_EDIT))(edit)
+app.command("p", help=i18n.get(I18NKey.ALIAS_POST))(post)
+app.command("ip", help=i18n.get(I18NKey.ALIAS_IMG_POST))(img_post)
+app.command("ie", help=i18n.get(I18NKey.ALIAS_TG_IMG_EDIT))(img_edit)

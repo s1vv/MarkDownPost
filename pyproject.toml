@@ -21,6 +21,10 @@ mdp = "main:main"
 
 [tool.setuptools]
 package-dir = {"" = "src"}
+include-package-data = true
+
+[tool.setuptools.package-data]
+i18n = ["*.json"]
 
 [build-system]
 requires = ["setuptools>=66"]

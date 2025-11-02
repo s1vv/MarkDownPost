@@ -15,7 +15,6 @@ logger = logging.getLogger(__name__)
 
 class TelegramClient:
     def __init__(self, token: str) -> None:
-        """Создает клиента Telegram API."""
         self.bot = Bot(token=token)
 
     async def send_message(
@@ -30,7 +29,6 @@ class TelegramClient:
             show_above_text=False,  # превью под текстом
         ),
     ) -> Optional[Message | TelegramError]:
-        """Отправка текстового сообщения."""
         try:
             return await self.bot.send_message(
                 chat_id=chat_id,
@@ -64,7 +62,6 @@ class TelegramClient:
         parse_mode: Optional[str] = "HTML",
         disable_web_page_preview: bool = False,
     ) -> Optional[Message | TelegramError | bool]:
-        """Редактирует существующее сообщение по ID."""
         try:
             return await self.bot.edit_message_text(
                 chat_id=chat_id,
@@ -79,7 +76,7 @@ class TelegramClient:
                 delay = e.retry_after.total_seconds()
             else:
                 delay = float(e.retry_after)
-            logger.warning(f"Rate limit при редактировании, жду {delay:.2f} сек...")
+            logger.warning(f"Rate limit, waiting {delay:.2f} sec...")
             await asyncio.sleep(delay)
             return await self.edit_message(
                 chat_id, message_id, new_text, parse_mode, disable_web_page_preview
@@ -94,7 +91,6 @@ class TelegramClient:
         md_path: Optional[str] = None,
         parse_mode: Optional[str] = "HTML",
     ) -> Optional[Message]:
-        """Отправка изображения с подписью."""
         html: Optional[str] = None
         if md_path:
             html = md_to_html(md_path)
@@ -118,14 +114,14 @@ class TelegramClient:
                 delay = e.retry_after.total_seconds()
             else:
                 delay = float(e.retry_after)
-            logger.warning(f"Rate limit при отправке фото, жду {delay:.2f} сек...")
+            logger.warning(f"Rate limit, waiting {delay:.2f} sec...")
             await asyncio.sleep(delay)
             return await self.send_photo(chat_id, photo_path, md_path, parse_mode)
         except TelegramError as e:
-            logger.error(f"Ошибка при отправке фото: {e}")
+            logger.error(f"Error sending image: {e}")
             return None
         except FileNotFoundError:
-            logger.error(f"Файл не найден: {photo_path}")
+            logger.error(f"File not found: {photo_path}")
             return None
 
     async def edit_photo(
@@ -135,7 +131,6 @@ class TelegramClient:
         md_path: Optional[str] = None,
         parse_mode: Optional[str] = "HTML",
     ) -> Message | bool:
-        """Отправка изображения с подписью."""
         html: Optional[str] = None
         if md_path:
             html = md_to_html(md_path)
@@ -153,12 +148,11 @@ class TelegramClient:
                 delay = e.retry_after.total_seconds()
             else:
                 delay = float(e.retry_after)
-            logger.warning(f"Rate limit при отправке фото, жду {delay:.2f} сек...")
+            logger.warning(f"Rate limit sending image, waiting {delay:.2f} sec...")
             await asyncio.sleep(delay)
             return await self.edit_photo(chat_id, message_id, md_path, parse_mode)
 
     async def delete_message(self, chat_id: Union[int, str], message_id: int) -> bool:
-        """Удаляет сообщение по ID."""
         try:
             await self.bot.delete_message(
                 chat_id=chat_id,
@@ -167,5 +161,5 @@ class TelegramClient:
             )
             return True
         except TelegramError as e:
-            logger.error(f"Ошибка при удалении сообщения: {e}")
+            logger.error(f"Error: {e}")
             return False
