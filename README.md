@@ -265,9 +265,8 @@ mdp gr get-pages-list --output-path pages.xlsx
 
 ## 💡 Quick Links
 
-* 📘 [Project Repository](https://github.com/s1vv/MarkDownPost)
-* 💬 [Telegram Support](https://t.me/rs_py)
-* 📺 [YouTube — Setup & Usage](https://youtu.be/sw2zhOAxWmM)
+* 💬 [Telegram Support](https://t.me/markdownpost)
+* 📺 [YouTube — Setup & Usage](https://www.youtube.com/@markdownpost)
 
 ---
 
