@@ -19,9 +19,6 @@ from i18n.i18n_keys import I18NKey
 app = typer.Typer(help=i18n.get(I18NKey.CLI_TELEGRAPH_COMMANDS))
 console = Console()
 
-if not settings.TELEGRAM_BOT_TOKEN:
-    logger.warning(i18n.get(I18NKey.ERRORS_MISSING_TOKEN))
-
 client = TelegraphClient(settings.TELEGRAPH_ACCESS_TOKEN)
 
 
@@ -30,7 +27,7 @@ def edit(page_path: str, md_path: str, title: Optional[str] = None):
     """
     Page Editing: mdp gr edit page-address path/to/file.md, optionally use --title, then title is not extracted from # in .md"
     """
-    result = client.edit_page(
+    result = client.edit(
         path=page_path,
         md_path=md_path,
         author_name=settings.AUTHOR_NAME,
@@ -49,7 +46,7 @@ def post(md_path: str, title=None):
     "Creating a page: mdp gr post path/to/file.md, optionally use --title,
     then title is not extracted from # in .md""
     """
-    result = client.create_page(md_path=md_path, title=title)
+    result = client.create(md_path=md_path, title=title)
     if result.get("url"):
         logger.info(f"{i18n.get(I18NKey.SUCCESS_SAVE_SUCCESS)} {result["url"]}")
     else:
