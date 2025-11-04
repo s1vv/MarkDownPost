@@ -103,5 +103,6 @@ def sanitize_html_for_telegram(
                 tag.attrs = {}
 
     text = str(soup)
+    text = text.replace("<br/>", "\n").replace("<br>", "\n")
     text = re.sub(r"\n{3,}", "\n\n", text)
     return text.strip()
