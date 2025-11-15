@@ -35,5 +35,5 @@ handler.setFormatter(
 )
 
 logger = logging.getLogger("cli")
-logger.setLevel(logging.INFO)
+logger.setLevel(logging.DEBUG)
 logger.addHandler(handler)

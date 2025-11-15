@@ -1,5 +1,6 @@
 from pathlib import Path
 
+from dotenv import load_dotenv
 import typer
 
 from core.env_manager import init_env_from_template, load_env
@@ -25,7 +26,12 @@ def init(
 @app.command()
 def show():
     """Shows the path to the active one .env and environment variables."""
-    env_path = load_env()
+    local_env = Path("../.env")
+    env_path: Path | None = None
+    if local_env.exists():
+        env_path = local_env
+    else:
+        env_path = load_env()
     if not env_path:
         typer.echo("⚠️ .env not found, run 'mdp init'. ")
         raise typer.Exit()

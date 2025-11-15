@@ -7,6 +7,7 @@ from utils.md2telegraph import markdown_to_telegraph_nodes
 
 TELEGRAPH_API_URL = "https://api.telegra.ph"
 
+
 def _get_token_telegraph() -> str:
     from config.settings import ENV_FILE, AUTHOR_NAME
     from core.telegraph import Telegraph
@@ -14,7 +15,7 @@ def _get_token_telegraph() -> str:
     from utils.i18n import i18n
     from i18n.i18n_keys import I18NKey
     from cli.logger_config import logger
-    
+
     answer = input(i18n.get(I18NKey.TELEGRAPH_ENV_TOKEN_REQUEST)).strip().lower()
 
     if answer not in ["y", "yes", "д", "да"]:
@@ -27,25 +28,22 @@ def _get_token_telegraph() -> str:
     new_token = acc["access_token"]
     logger.info(i18n.get(f"{I18NKey.TELEGRAPH_ENV_TOKEN_CREATED} {new_token}"))
 
-    # Сохраняем токен в тот .env, который реально используется (ENV_FILE)
     if not ENV_FILE:
         logger.error(i18n.get(I18NKey.ERRORS_ENV_NOT_FOUND))
         return new_token
 
     try:
-        # set_key ожидает путь как строку или Path; убедимся что директория и файл существуют
         ENV_FILE.parent.mkdir(parents=True, exist_ok=True)
         if not ENV_FILE.exists():
             ENV_FILE.touch()
-        # Записываем в файл .env
         set_key(str(ENV_FILE), "TELEGRAPH_ACCESS_TOKEN", new_token)
         logger.info(f"{i18n.get(I18NKey.SUCCESS_SAVE_SUCCESS)} {ENV_FILE}")
-        # Подгрузим обновлённые переменные (опционально)
         load_dotenv(ENV_FILE, override=True)
     except Exception as e:
         logger.error(f"{i18n.get(I18NKey.ERRORS_SAVE_ERROR)} {ENV_FILE} {e}")
 
     return new_token
+
 
 class TelegraphClient:
     def __init__(self, access_token: str | None = None):
@@ -55,7 +53,6 @@ class TelegraphClient:
     def _init_client(self):
         if self._client is None:
             if not self._access_token:
-                print("token", self._access_token)
                 self._access_token = _get_token_telegraph()
             self._client = Telegraph(self._access_token)
 
@@ -75,7 +72,7 @@ class TelegraphClient:
         html_content, title_from_html = markdown_to_telegraph_nodes(md_path)
         title = title or title_from_html or "None"
         result_tgraph = self._client.create_page(
-            title, html_content=html_content, author_name=author_name, author_url=author_url
+            title, content=html_content, author_name=author_name, author_url=author_url
         )
         return result_tgraph
 
@@ -113,7 +110,7 @@ class TelegraphClient:
         Retrieves the list of account pages.
         """
         params = {
-            "access_token": _get_token_telegraph(),
+            "access_token": self._access_token,
             "limit": limit,
             "offset": offset,
         }
