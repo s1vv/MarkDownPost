@@ -9,7 +9,7 @@ from i18n.i18n_keys import I18NKey
 from utils.i18n import i18n
 
 # 1. Локальный .env рядом с проектом
-local_env = Path("../../.env")
+local_env = Path("../.env")
 
 # 2. Дефолтный путь в конфиге пользователя
 system = platform.system()

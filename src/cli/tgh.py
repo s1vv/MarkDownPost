@@ -28,7 +28,7 @@ def post(md_path: str, title: Optional[str] = None):
     """
     A post in the Telegraph and a link to the Telegram page
     """
-    result = GrClient.create_page(title=title, md_path=md_path)
+    result = GrClient.create(title=title, md_path=md_path)
     if result.get("url"):
         logger.info(f": {result["url"]}")
 

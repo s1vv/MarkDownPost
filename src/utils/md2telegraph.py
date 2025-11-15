@@ -53,6 +53,15 @@ ALLOWED_ATTRS = {
 
 Node = Union[str, Dict[str, Any]]
 
+def flatten_nodes(nodes: List[Node]) -> List[Node]:
+    flat: List[Node] = []
+    for n in nodes:
+        if isinstance(n, list):
+            flat.extend(flatten_nodes(n)) 
+        else:
+            flat.append(n)
+    return flat
+
 
 def _get_allowed_attrs(tag: Tag) -> Optional[Dict[str, str]]:
     """Возвращает словарь разрешённых атрибутов для тега (или None)."""
@@ -96,10 +105,12 @@ def _nodes_from_element(el: PageElement) -> List[Node]:
                 result.extend(_nodes_from_element(c))
         return result
 
-    children: List[Node] = []
+    raw_children: List[Node] = []
     for c in el.contents:
         if isinstance(c, PageElement):
-            children.extend(_nodes_from_element(c))
+            raw_children.extend(_nodes_from_element(c))
+
+    children = flatten_nodes(raw_children)
 
     attrs = _get_allowed_attrs(el)
 
@@ -178,6 +189,7 @@ def markdown_to_telegraph_nodes(
 
     # 4) HTML -> Telegraph nodes
     nodes = html_to_telegraph_nodes(str(soup))
+    nodes = flatten_nodes(nodes)
     if not nodes:
         raise RuntimeError("Нет данных для публикации")
     return nodes, title
